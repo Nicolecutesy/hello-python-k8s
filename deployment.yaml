@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-python
+  template:
+    metadata:
+      labels:
+        app: hello-python
+    spec:
+      containers:
+      - name: hello-python
+        image: nicoleacr01.azurecr.io/hello-python-k8s:v1
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-python-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: hello-python
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
